@@ -1,6 +1,7 @@
 import * as uuid from "uuid";
-import { handler } from "./libs/handler-lib";
-import { dynamoDb, getTableName } from "./libs/dynamodb-lib";
+import { handler } from "libs/handler-lib";
+import { dynamoDb, getTableName } from "libs/dynamodb-lib";
+import { getUserId } from "libs/event-lib";
 
 type NoteBody = {
   content: string;
@@ -23,7 +24,7 @@ export const main = handler(async (event) => {
     // - 'attachment': parsed from request body
     // - 'createdAt': current Unix timestamp
     Item: {
-      userId: event.requestContext.identity.cognitoIdentityId,
+      userId: getUserId(event),
       noteId: uuid.v1(),
       content: data.content,
       attachment: data.attachment,

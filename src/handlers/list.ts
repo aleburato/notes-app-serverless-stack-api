@@ -1,5 +1,6 @@
-import { handler } from "./libs/handler-lib";
-import { dynamoDb, getTableName } from "./libs/dynamodb-lib";
+import { handler } from "libs/handler-lib";
+import { dynamoDb, getTableName } from "libs/dynamodb-lib";
+import { getUserId } from "libs/event-lib";
 
 export const main = handler(async (event) => {
   const params = {
@@ -12,7 +13,7 @@ export const main = handler(async (event) => {
     //   of the authenticated user
     KeyConditionExpression: "userId = :userId",
     ExpressionAttributeValues: {
-      ":userId": event.requestContext.identity.cognitoIdentityId,
+      ":userId": getUserId(event),
     },
   };
 

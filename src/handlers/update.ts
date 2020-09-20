@@ -1,5 +1,6 @@
-import { handler } from "./libs/handler-lib";
-import { dynamoDb, getTableName } from "./libs/dynamodb-lib";
+import { handler } from "libs/handler-lib";
+import { dynamoDb, getTableName } from "libs/dynamodb-lib";
+import { getUserId } from "libs/event-lib";
 
 export const main = handler(async (event) => {
   const noteId = event.pathParameters?.id;
@@ -17,7 +18,7 @@ export const main = handler(async (event) => {
     // - 'userId': Identity Pool identity id of the authenticated user
     // - 'noteId': path parameter
     Key: {
-      userId: event.requestContext.identity.cognitoIdentityId,
+      userId: getUserId(event),
       noteId,
     },
     // 'UpdateExpression' defines the attributes to be updated
