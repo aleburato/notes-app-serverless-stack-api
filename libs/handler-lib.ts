@@ -8,7 +8,7 @@ type LambdaHandler = {
   (
     event: APIGatewayProxyEvent,
     context: APIGatewayEventRequestContext
-  ): Promise<Record<string, any>>;
+  ): Promise<unknown>;
 };
 
 export function handler(lambda: LambdaHandler) {
@@ -16,7 +16,7 @@ export function handler(lambda: LambdaHandler) {
     event: APIGatewayProxyEvent,
     context: APIGatewayEventRequestContext
   ): Promise<APIGatewayProxyResult> {
-    let body: any, statusCode: number;
+    let body: unknown, statusCode: number;
 
     try {
       // Run the Lambda

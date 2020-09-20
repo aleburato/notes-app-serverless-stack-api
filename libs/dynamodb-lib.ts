@@ -15,4 +15,11 @@ const dynamoDb = {
     client.delete(params).promise(),
 };
 
-export { dynamoDb };
+const getTableName = (): string => {
+  if (!process.env.tableName) {
+    throw new Error("Unable to retrieve table name from Env");
+  }
+  return process.env.tableName;
+};
+
+export { dynamoDb, getTableName };

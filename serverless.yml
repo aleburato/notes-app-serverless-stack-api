@@ -13,7 +13,7 @@ custom:
   bundle:
     sourcemaps: false
     stats: true
-    linting: false
+    linting: true
 
 provider:
   name: aws
@@ -63,6 +63,17 @@ functions:
     events:
       - http:
           path: notes/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  list:
+    # Defines an HTTP API endpoint that calls the main function in list.js
+    # - path: url path is /notes
+    # - method: GET request
+    handler: list.main
+    events:
+      - http:
+          path: notes
           method: get
           cors: true
           authorizer: aws_iam

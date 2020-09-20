@@ -1,6 +1,6 @@
 import * as uuid from "uuid";
 import { handler } from "./libs/handler-lib";
-import { dynamoDb } from "./libs/dynamodb-lib";
+import { dynamoDb, getTableName } from "./libs/dynamodb-lib";
 
 type NoteBody = {
   content: string;
@@ -8,9 +8,12 @@ type NoteBody = {
 };
 
 export const main = handler(async (event) => {
-  const data = JSON.parse(event.body!) as NoteBody;
+  if (!event.body) {
+    throw new Error("Event must have a body");
+  }
+  const data = JSON.parse(event.body) as NoteBody;
   const params = {
-    TableName: process.env.tableName!,
+    TableName: getTableName(),
     // 'Item' contains the attributes of the item to be created
     // - 'userId': user identities are federated through the
     //             Cognito Identity Pool, we will use the identity id
