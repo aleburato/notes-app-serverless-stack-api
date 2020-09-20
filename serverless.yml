@@ -5,11 +5,13 @@ package:
   individually: true
 
 plugins:
+  - serverless-functions-base-path
   - serverless-bundle # Package our functions with Webpack
   - serverless-offline
   - serverless-dotenv-plugin # Load .env as environment variables
 
 custom:
+  functionsBasePath: src
   bundle:
     sourcemaps: false
     stats: true
@@ -41,18 +43,29 @@ provider:
       Resource: "arn:aws:dynamodb:us-east-1:*:*"
 
 functions:
-  # Defines an HTTP API endpoint that calls the main function in create.js
-  # - path: url path is /notes
-  # - method: POST request
-  # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
-  #     domain api call
-  # - authorizer: authenticate using the AWS IAM role
   create:
+    # Defines an HTTP API endpoint that calls the main function in create.js
+    # - path: url path is /notes
+    # - method: POST request
+    # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
+    #   domain api call
+    # - authorizer: authenticate using the AWS IAM role
     handler: create.main
     events:
       - http:
           path: notes
           method: post
+          cors: true
+          authorizer: aws_iam
+  update:
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /notes/{id}
+    # - method: PUT request
+    handler: update.main
+    events:
+      - http:
+          path: notes/{id}
+          method: put
           cors: true
           authorizer: aws_iam
   get:

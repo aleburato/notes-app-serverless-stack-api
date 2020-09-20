@@ -6,4 +6,5 @@ dist
 coverage
 .serverless
 .webpack
-*.js
+.vscode
+**/*.js
